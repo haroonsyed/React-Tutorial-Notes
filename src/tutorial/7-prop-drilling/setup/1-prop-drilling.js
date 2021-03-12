@@ -1,10 +1,56 @@
-import React, { useState } from 'react';
-
+import React, { useState } from "react";
+import { data } from "../../../data";
 // more components
 // fix - context api, redux (for more complex cases)
 
 const PropDrilling = () => {
-  return <h2>prop drilling</h2>;
+  const [people, setPeople] = useState(data);
+  const removePerson = (id) => {
+    setPeople((people) => {
+      return people.filter((person) => {
+        return person.id !== id;
+      });
+    });
+  };
+  return (
+    <section>
+      <h3>Prop Drilling</h3>
+      <List people={people} removePerson={removePerson} />
+    </section>
+  );
+};
+
+const List = ({ people, removePerson }) => {
+  return (
+    <>
+      {people.map((person) => {
+        return (
+          <SinglePerson
+            key={person.id}
+            {...person}
+            removePerson={removePerson}
+          />
+        );
+      })}
+    </>
+  );
+};
+
+const SinglePerson = (props) => {
+  const { id, name, removePerson } = props;
+  return (
+    <div className="item">
+      <h4>{name}</h4>
+      <button
+        className="btn"
+        onClick={() => {
+          removePerson(id);
+        }}
+      >
+        Remove Person
+      </button>
+    </div>
+  );
 };
 
 export default PropDrilling;

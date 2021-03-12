@@ -1,0 +1,86 @@
+Hooks:
+Simply a function given to you by some interface for you to inject your own functionality.
+For example, useState is a hook that allows you to update the state of a variable while react handles rerendering.
+You cannot use a hook as a parameter to a conditional. (You can use it inside the conditional of course)
+
+useState:
+Just because the value a component pulls from has been changes, that does not mean that the component will look different.
+It must be told to re-render. useState() will update the state, and tell the componnet to re-render.
+
+useEffect:
+Tells your component to do something after being rendered (or re-rendered).
+To only run useEffect on the initial render, pass it a second parameter [] (an empty array)
+The array contains dependencies that cause the code to run after a re-render.
+A cleanup function is returned in useEffect to "undo" what the effect does
+useEffect cannot directly have an async callback (must be in inner function)
+
+BE CAREFUL WHEN UPDATING OFF OF PREVIOUS STATE:
+React will first merge the object you passed to setState() into the current state. Then it will start that reconciliation thing. 
+Because of the calling setState() might not immediately update your state. React may batch multiple setState() calls into a single update for better performance.
+This means that, when calling setState directly, you may work with only the previous state, even when you wanted to stack the calls!
+To fix this, use a functional setState, which will queue the updates. This is considered more "safe".
+It is slower, but for any data you should use functional setState
+
+Multiple Returns:
+Inside a component, you do not need only one return, you could use a conditional to choose between many returns. (There must be a return though)
+
+Short Circuit:
+Use && or || to display default values or handle if something is true before displaying in tags
+
+Forms:
+Not part of react, but the browser will refresh after submitting a form. But we usually want react to handle that refresh, not html.
+So we can use the event parameter and preventDefault() of refreshing.
+If you need the value of a form to change as you type, use the onChange attribute of an input and set it to e.target.value
+Remember you can get the field using obj[name]
+
+useRef:
+similar to useState in that it preserved values, but it does not trigger a re-render. Useful for targeting a dom element.
+It is more performant, and does not require an onChange attribute set either
+
+useReducer:
+Helps give structure when you have a large amount of state parts. Standardises the way state is accessed.
+The reducer function is passed to useReducer determines how the state will change, an initial state is also passed in. 
+The reducer takes in the state and action, the action determines how the state should change.
+You then dispatch actions (with keyword 'type') to the reducer. To pass data to the reducer, pass more parameters in the action object.
+For clarity, since reducers can have a lot of actions, they are located in a separate file
+
+Prop Drilling:
+Passing a function or object down components so that it can modify data at the very top component.
+A little hacky and unmaintainable though, remedied through the context api and redux.
+
+Context API:
+Avoid prop drilling.
+Gives you access to a provider and a consumer component
+You pass that context into a component that uses it through useContext. This gives a package of all the functions that should be available to it.
+Providers feed functions or values into the context object. 
+
+Custom Hooks:
+Abstract functionality so you don't have to duplicate code for a given component.
+Create a function starting with 'use'(indicates hook to react), create parameters and a return, then import it where needed and destructure what you need.
+Also cleans up code. 
+Hooks should be called fom within react function components to preserve state.
+
+PropTypes:
+If a property is missing, but you try to access it, you will get an error/unexpected behavior.
+To remedy this, you can set the proptypes of an component to require certain types or objects. This helps reduce errors as well during development.
+
+DefaultProps:
+Allows you to define a default prop to replace parameters passed into a component that are null.
+
+React-Router:
+Is NOT part of react, has to be installed separately. Allows sending redirects to different pages without a new html request.
+Use 'npm install react-router-dom' to install
+Wrap your application in the router, thrn create Routes with path to components representing your pages
+High level Routes should be in a switch, so only one path matches (otherwise partial matches will render multiple pages)
+USE KEYWORD 'EXACT' BEFORE ROUTES when you are avoiding a nested structure!
+Use Link for...links. This will specify the use of router.
+
+Passing Params in Router:
+link to a page with the url containing the data path='/:person/:id' with the children component you want to render there.
+Then in the child component, useParams from 'react-router-dom' to get params
+
+Performance Optimization:
+Wrapping a component in React.memo() lets react check that values for the props did not change. So a rerender for that given component won't re-render
+You can also useCallback() with dependency list to avoid the re-render problem with prop drilling functions.
+For values you don't want to recalculate, useMemo does the same as above, except for avoiding a calculation.
+
