@@ -1,3 +1,5 @@
+Let me know where I can make these clearer/better.
+
 Hooks:
 Simply a function given to you by some interface for you to inject your own functionality.
 For example, useState is a hook that allows you to update the state of a variable while react handles rerendering.
